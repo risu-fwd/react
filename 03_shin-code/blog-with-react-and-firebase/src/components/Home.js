@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./Home.css";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDocs } from "firebase/firestore";
 import { db } from "../firebase";
 
 const Home = () => {
@@ -10,14 +10,15 @@ const Home = () => {
     // #42 追記分
     const getPosts = async () => {
       const data = await getDocs(collection(db, "posts"));
-      // console.log(data);
-      // console.log(data.docs);
-      // console.log(data.docs.map((doc) => ({ doc })));
-      // console.log(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
       setPostList(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     };
     getPosts();
   }, []);
+
+  const handleDalete = async (id) => {
+    await deleteDoc(doc(db, "posts", id));
+    window.location.href = "/";
+  };
 
   return (
     <div className="homePage">
@@ -31,7 +32,7 @@ const Home = () => {
             <div className="postTextContainer">{post.postsText}</div>
             <div className="nameAndDeleteButton">
               <h3>@{post.author.username}</h3>
-              <button>削除</button>
+              <button onClick={() => handleDalete(post.id)}>削除</button>
             </div>
           </div>
         );
