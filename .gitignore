@@ -1,0 +1,9 @@
+# for node_modules
+node_modules/
+
+# ignore directories
+00_code-mafia/
+01_jakee/
+02_torahack/
+03_shin-code/
+
